@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private TextInputEditText login;
     private TextInputEditText password;
 
-    private TextInputLayout layout_login;
+    private TextInputLayout layout_name;
     private TextInputLayout layout_password;
 
     private Button btn_login;
@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         password = findViewById(R.id.edit_password);
         btn_login = findViewById(R.id.button);
         btn_logout = findViewById(R.id.button2);
+        layout_name = findViewById(R.id.layout_name);
+        layout_password = findViewById(R.id.layout_password);
 
         listenerLogin();
         listenerLogout();
@@ -58,13 +60,13 @@ public class MainActivity extends AppCompatActivity {
             if (text_name.equals("")){
                 login.setError(getString(R.string.error_inputs, "Name"));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    layout_login.setBoxStrokeErrorColor(getColorStateList(R.color.red));
+                    layout_name.setBoxStrokeColor(getColor(R.color.red));
                 }
 
             } else if (text_password.equals("")){
                 password.setError(getString(R.string.error_inputs, "Password"));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    layout_password.setBoxStrokeErrorColor(getColorStateList(R.color.red));
+                    layout_password.setBoxStrokeColor(getColor(R.color.red));
                 }
 
             } else{
@@ -88,10 +90,10 @@ public class MainActivity extends AppCompatActivity {
             password.setText("");
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                layout_login.setBoxStrokeErrorColor(getColorStateList(R.color.purple_500));
+                layout_name.setBoxStrokeColor(getColor(R.color.purple_500));
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                layout_password.setBoxStrokeErrorColor(getColorStateList(R.color.purple_500));
+                layout_password.setBoxStrokeColor(getColor(R.color.purple_500));
             }
 
         });
