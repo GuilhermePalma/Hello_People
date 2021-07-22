@@ -7,7 +7,10 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.hellopeople.R;
 import com.google.android.material.textfield.TextInputEditText;
@@ -26,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_login;
     private Button btn_clear;
 
-    private final String NAME_PREFERENCES = "LOGIN";
+    private TextView hasLogin;
+
     private final String NAME_LOGIN = "NAME";
     private final String PASSWORD_LOGIN = "PASSWORD";
     private final String FIRST_LOGIN = "FIRST_LOGIN";
@@ -38,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        String NAME_PREFERENCES = "LOGIN";
         sharedPreferences = getSharedPreferences(NAME_PREFERENCES,0);
-        checkLogin();
 
         login = findViewById(R.id.edit_name);
         password = findViewById(R.id.edit_password);
@@ -47,15 +51,24 @@ public class MainActivity extends AppCompatActivity {
         btn_clear = findViewById(R.id.btn_clear);
         layout_name = findViewById(R.id.layout_name);
         layout_password = findViewById(R.id.layout_password);
+        hasLogin = findViewById(R.id.text_hasLogin);
 
+        updateInfosLogin();
         listenerLogin();
         listenerClear();
     }
 
-    private void checkLogin() {
-        if (sharedPreferences.getString(NAME_LOGIN,null) != null){
-            startActivity(new Intent(this, LoggedUser.class));
-            finish();
+    private boolean existsLogin() {
+        return sharedPreferences.getString(NAME_LOGIN, null) != null;
+    }
+
+    private void updateInfosLogin(){
+        if (existsLogin()){
+            btn_clear.setText(R.string.btn_logout);
+            hasLogin.setVisibility(View.VISIBLE);
+        } else {
+            btn_clear.setText(R.string.btn_clear);
+            hasLogin.setVisibility(View.GONE);
         }
     }
 
@@ -86,14 +99,23 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             } else{
+                if (existsLogin()) {
+                    if (isCorrectLogin(text_name,text_password)){
+                        sharedPreferences.edit().putBoolean(FIRST_LOGIN, false).apply();
+                        startActivity(new Intent(this, LoggedUser.class));
+                        finish();
+                    } else {
+                        Toast.makeText(this, R.string.incorrect_login, Toast.LENGTH_LONG)
+                                .show();
+                    }
+                } else {
+                    sharedPreferences.edit().putString(NAME_LOGIN, text_name).apply();
+                    sharedPreferences.edit().putString(PASSWORD_LOGIN, text_password).apply();
+                    sharedPreferences.edit().putBoolean(FIRST_LOGIN, true).apply();
 
-                sharedPreferences.edit().putString(NAME_LOGIN, text_name).apply();
-                sharedPreferences.edit().putString(PASSWORD_LOGIN, text_password).apply();
-                sharedPreferences.edit().putBoolean(FIRST_LOGIN, true).apply();
-
-                startActivity(new Intent(this, LoggedUser.class));
-                finish();
-
+                    startActivity(new Intent(this, LoggedUser.class));
+                    finish();
+                }
             }
         });
     }
@@ -114,7 +136,21 @@ public class MainActivity extends AppCompatActivity {
                 layout_password.setBoxStrokeColor(getColor(R.color.purple_500));
             }
 
+            if (existsLogin()){
+                sharedPreferences.edit().putString(NAME_LOGIN, null).apply();
+                sharedPreferences.edit().putString(PASSWORD_LOGIN, null).apply();
+                sharedPreferences.edit().putBoolean(FIRST_LOGIN, true).apply();
+                updateInfosLogin();
+            }
         });
+    }
+
+    private boolean isCorrectLogin(String name, String password){
+
+        String name_salve = sharedPreferences.getString(NAME_LOGIN, "");
+        String password_save = sharedPreferences.getString(PASSWORD_LOGIN, "");
+
+        return name_salve.equals(name) && password_save.equals(password);
     }
 
 }

@@ -119,6 +119,16 @@
                         android:text="@string/btn_clear" />
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/text_hasLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:text="@string/notice_hasLogin"
+                    android:visibility="gone" />
+
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>

@@ -6,13 +6,16 @@
     <string name="hint_name">Name</string>
     <string name="hint_password">Password</string>
     <string name="description_help">Help Button</string>
+    <string name="notice_hasLogin">There is already an <b>existing Login</b>, to exit <b>click on
+        \'Logout\'</b></string>
     <string name="btn_login">Login</string>
     <string name="btn_clear">Clear</string>
     <string name="error_inputs">The <b>%s</b> field must be completed</string>
+    <string name="incorrect_login"><b>Incorrect</b> Username or Password</string>
 
     <!--LoggedUser-->
-    <string name="message_hello">%s %s, Welcome!</string>
-    <string name="message_successLogin">%s %s You Have Successfully Logged In!</string>
+    <string name="message_hello">%1$s %2$s, Welcome!</string>
+    <string name="message_successLogin">%1$s %2$s, You Have Successfully Logged In!</string>
     <string name="message_goodDay">Have a Great Day %s</string>
     <string name="btn_logout">Logout</string>
     <string name="btn_moreDefault">More Details</string>
@@ -21,8 +24,8 @@
     <string name="txt_ip">IP Address: %s</string>
     <string name="txt_langue">Researched language: %s</string>
     <string name="txt_errorMessage">Error IP: %s</string>
-    <string name="txt_country">Country: %s - %s</string>
-    <string name="txt_region">Region: %s - %s</string>
+    <string name="txt_country">Country: %1$s - %2$s</string>
+    <string name="txt_region">Region: %1$s - %2$s</string>
     <string name="txt_city">City: %s</string>
     <string name="txt_timezone">TimeZone: %s</string>
     <string name="txt_organization">Organization: %s</string>
