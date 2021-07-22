@@ -37,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
         login = findViewById(R.id.edit_name);
         password = findViewById(R.id.edit_password);
-        btn_login = findViewById(R.id.button);
-        btn_logout = findViewById(R.id.button2);
+        btn_login = findViewById(R.id.btn_login);
+        btn_logout = findViewById(R.id.btn_clear);
         layout_name = findViewById(R.id.layout_name);
         layout_password = findViewById(R.id.layout_password);
 

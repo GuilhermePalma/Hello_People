@@ -30,7 +30,6 @@ public class LoggedUser extends AppCompatActivity {
     private String json_dataIp = "";
     private String json_hello = "";
 
-
     private final String NAME_PREFERENCES = "LOGIN";
     private final String NAME_LOGIN = "NAME";
     private final String PASSWORD_LOGIN = "PASSWORD";
@@ -38,10 +37,6 @@ public class LoggedUser extends AppCompatActivity {
     private static final String URL_GET_IP = "http://checkip.amazonaws.com";
     private static final String URL_GET_DATA = "http://ip-api.com/json";
     private static final String URL_GET_HELLO = "https://fourtonfish.com/hellosalut";
-
-    SearchInternet researches;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -5,12 +5,24 @@
     <string name="title_activity">Login User</string>
     <string name="hint_name">Name</string>
     <string name="hint_password">Password</string>
+    <string name="description_help">Help Button</string>
     <string name="btn_login">Login</string>
-    <string name="btn_logout">Logout</string>
+    <string name="btn_clear">Clear</string>
     <string name="error_inputs">O campo <b>%s</b> Precisa ser Preenchido</string>
 
     <!--LoggedUser-->
     <string name="message_hello">%s %s you have successfully logged in!</string>
-    <string name="message_goodDay">Have a great day %s</string>
+    <string name="message_goodDay">%s ! Have a great day %s</string>
+    <string name="btn_logout">Logout</string>
+    <string name="btn_more">More Details</string>
+    <string name="title_details">Details</string>
+    <string name="txt_langue">Researched language: %s</string>
+    <string name="txt_country">Country: %s - %s</string>
+    <string name="txt_region">Region: %s - %s</string>
+    <string name="txt_city">City: %s</string>
+    <string name="txt_timezone">TimeZone: %s</string>
+    <string name="txt_organization">Organization: %s</string>
+    <string name="txt_mobile">Search Mobile: %s</string>
+
 
 </resources>
