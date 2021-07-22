@@ -1,4 +1,4 @@
-package com.example.hellopeople;
+package com.example.hellopeople.model;
 
 public class Ip {
     private String ip;

@@ -1,4 +1,4 @@
-package com.example.hellopeople;
+package com.example.hellopeople.model;
 
 import android.util.Log;
 

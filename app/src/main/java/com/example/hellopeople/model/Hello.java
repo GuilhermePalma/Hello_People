@@ -1,4 +1,4 @@
-package com.example.hellopeople;
+package com.example.hellopeople.model;
 
 public class Hello {
     private final String language;

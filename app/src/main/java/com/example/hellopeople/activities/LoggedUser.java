@@ -1,4 +1,4 @@
-package com.example.hellopeople;
+package com.example.hellopeople.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+
+import com.example.hellopeople.R;
+import com.example.hellopeople.model.SearchInternet;
+import com.example.hellopeople.model.Hello;
+import com.example.hellopeople.model.Ip;
+import com.example.hellopeople.model.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
