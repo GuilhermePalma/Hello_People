@@ -1,8 +1,5 @@
 package com.example.hellopeople.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Entity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -11,24 +8,23 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
 import android.util.Log;
-import android.util.Xml;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.hellopeople.R;
-import com.example.hellopeople.model.SearchInternet;
 import com.example.hellopeople.model.Hello;
 import com.example.hellopeople.model.Ip;
+import com.example.hellopeople.model.SearchInternet;
 import com.example.hellopeople.model.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -334,8 +330,12 @@ public class LoggedUser extends AppCompatActivity {
             txt_city.setText(String.format(getString(R.string.txt_city), ip.getCity()));
             txt_timezone.setText(String.format(getString(R.string.txt_timezone), ip.getTimeZone()));
             txt_org.setText(String.format(getString(R.string.txt_organization), ip.getOrg()));
-            txt_mobile.setText(String.format(getString(R.string.txt_mobile),
-                    String.valueOf(ip.isMobile())));
+            if (ip.isMobile()){
+                // isMobile = True
+                txt_mobile.setText(String.format(getString(R.string.txt_mobile), "Yes"));
+            } else {
+                txt_mobile.setText(String.format(getString(R.string.txt_mobile), "No"));
+            }
         }
     }
 

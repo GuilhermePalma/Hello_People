@@ -29,7 +29,7 @@
     <string name="txt_city">City: %s</string>
     <string name="txt_timezone">TimeZone: %s</string>
     <string name="txt_organization">Organization: %s</string>
-    <string name="txt_mobile">Search Mobile: %s</string>
+    <string name="txt_mobile">Search with Mobile: %s</string>
     <string name="error_detailsIP">Error Receiving IP Details</string>
     <string name="error_hello">Error Receiving Data for \'Hello\'</string>
 
