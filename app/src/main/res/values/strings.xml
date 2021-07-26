@@ -10,6 +10,7 @@
         \'Logout\'</b></string>
     <string name="btn_login">Login</string>
     <string name="btn_clear">Clear</string>
+    <string name="error_internet">There is no Internet Connection</string>
     <string name="error_inputs">The <b>%s</b> field must be completed</string>
     <string name="incorrect_login"><b>Incorrect</b> Username or Password</string>
 
