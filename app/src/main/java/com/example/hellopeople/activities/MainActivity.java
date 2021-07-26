@@ -225,6 +225,12 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
 
+        } else if(layout_language.getVisibility() == View.VISIBLE &&
+                input_language.getText().toString().equals("")){
+
+                layout_language.setError(getString(R.string.error_inputs, "Language"));
+                layout_language.requestFocus();
+                return false;
         } else {
             user = new User(text_name,text_password,language_choised);
             return true;
