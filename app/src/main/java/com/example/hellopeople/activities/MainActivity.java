@@ -12,9 +12,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hellopeople.R;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button btn_login;
     private Button btn_clear;
+    private ImageButton help;
 
     private TextView hasLogin;
 
@@ -72,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         input_language = findViewById(R.id.autoCompleteLanguage);
         switch_languages = findViewById(R.id.switch_languages);
         layout_language = findViewById(R.id.layout_language);
+        help = findViewById(R.id.imgbtn_help);
 
         languages = getResources().getStringArray(R.array.language);
         code_languages = getResources().getStringArray(R.array.code_language);
@@ -91,8 +95,25 @@ public class MainActivity extends AppCompatActivity {
         input_language.setOnItemClickListener((parent, view, position, id) ->
                 language_choised = code_languages[position]);
 
+        listenerHelp();
         listenerLogin();
         listenerClear();
+    }
+
+    // Listener do Button Help
+    private void listenerHelp() {
+        help.setOnClickListener( v-> {
+            AlertDialog alert_help = new AlertDialog.Builder(this).create();
+
+            alert_help.setTitle(getString(R.string.title_help));
+            alert_help.setMessage(getString(R.string.step_oneHelp) + "\n" +
+                    getString(R.string.step_twoHelp) + "\n" + getString(R.string.step_threeHelp));
+
+            alert_help.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                    (dialog, which) -> alert_help.dismiss());
+
+            alert_help.show();
+        });
     }
 
     private void setUpInputLanguage() {

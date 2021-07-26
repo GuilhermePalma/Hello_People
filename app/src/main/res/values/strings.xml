@@ -15,6 +15,10 @@
     <string name="incorrect_login"><b>Incorrect</b> Username or Password</string>
     <string name="switch_language">Choose the language of the "Hello"</string>
     <string name="hint_language">Language</string>
+    <string name="title_help">How to Use ?</string>
+    <string name="step_oneHelp">- Enter your Login and Password in the Screen Fields </string>
+    <string name="step_twoHelp">- If you wish, click on "Choose the Language of the Hello" to customize your "Hello"</string>
+    <string name="step_threeHelp">- Click on the "Login" button</string>
 
     <!--LoggedUser-->
     <string name="message_hello">%1$s %2$s, Welcome!</string>
