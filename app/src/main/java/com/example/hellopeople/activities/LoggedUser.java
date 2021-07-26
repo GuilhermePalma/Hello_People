@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ public class LoggedUser extends AppCompatActivity {
     private TextView txt_timezone;
     private TextView txt_org;
     private TextView txt_mobile;
+    private ProgressBar process_loading;
 
     private String ip_user = "";
     private String json_dataIp = "";
@@ -57,6 +59,9 @@ public class LoggedUser extends AppCompatActivity {
     private final String PASSWORD_LOGIN = "PASSWORD";
     private final String FIRST_LOGIN = "FIRST_LOGIN";
 
+    private ExecutorService executor;
+    private Handler handler;
+
     private SharedPreferences preferences;
 
     @Override
@@ -64,14 +69,21 @@ public class LoggedUser extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logged_user);
 
+        handler = new Handler(Looper.getMainLooper());
+        setItemsId();
+
+        executor = Executors.newSingleThreadExecutor();
+
+        process_loading.setProgress(0);
+        process_loading.setMax(10);
+
         String NAME_PREFERENCES = "LOGIN";
         preferences = getSharedPreferences(NAME_PREFERENCES,0);
 
-        setItemsId();
-
+        // Initialization of the Async Method that obtains Activity information
+        searchAsyncInternet();
         listenerLogout();
         listenerSeeMore();
-        searchAsyncInternet();
     }
 
     private void setItemsId() {
@@ -89,6 +101,7 @@ public class LoggedUser extends AppCompatActivity {
         txt_timezone = findViewById(R.id.text_timezone);
         txt_org = findViewById(R.id.text_org);
         txt_mobile = findViewById(R.id.text_mobile);
+        process_loading = findViewById(R.id.progressBar_loading);
     }
 
     private void listenerLogout() {
@@ -116,9 +129,7 @@ public class LoggedUser extends AppCompatActivity {
     }
 
     private void searchAsyncInternet() {
-
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
+        executor = Executors.newSingleThreadExecutor();
 
         executor.execute(() -> {
 
@@ -155,9 +166,15 @@ public class LoggedUser extends AppCompatActivity {
                     Log.e("ERROR HELLO", "Unable to retrieve 'hello' by IP");
                 }
 
+                // Show in Window the result of Async Method ---> Visible
+                process_loading.setProgress(10);
+                process_loading.setVisibility(View.GONE);
+                txt_logged.setVisibility(View.VISIBLE);
+                txt_goodday.setVisibility(View.VISIBLE);
+                button_more.setVisibility(View.VISIBLE);
+
             });
         });
-
     }
 
     private String getIp(){
@@ -296,7 +313,7 @@ public class LoggedUser extends AppCompatActivity {
     private void showDetailsIp(Ip ip) {
 
         if (ip.getMessage_error() != null) {
-            Log.i("DATA IP", "Messge Error: " + ip.getMessage_error());
+            Log.i("DATA IP", "Message Error: " + ip.getMessage_error());
 
             // Show Details Empty
             txt_errorMessage.setVisibility(View.VISIBLE);

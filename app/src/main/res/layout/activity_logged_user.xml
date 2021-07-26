@@ -18,7 +18,7 @@
         android:gravity="center"
         android:text="@string/message_hello"
         android:textSize="25sp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,10 +34,21 @@
         android:gravity="center"
         android:text="@string/message_goodDay"
         android:textSize="25sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/layout_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_logged" />
+
+    <ProgressBar
+        android:id="@+id/progressBar_loading"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/layout_btn"
@@ -67,7 +78,8 @@
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:text="@string/btn_moreDefault" />
+            android:text="@string/btn_moreDefault"
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout
