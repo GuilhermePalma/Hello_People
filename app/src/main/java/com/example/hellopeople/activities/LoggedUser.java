@@ -26,6 +26,8 @@ import com.example.hellopeople.model.User;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -58,10 +60,11 @@ public class LoggedUser extends AppCompatActivity {
     private final String NAME_LOGIN = "NAME";
     private final String PASSWORD_LOGIN = "PASSWORD";
     private final String FIRST_LOGIN = "FIRST_LOGIN";
+    private final String LANGUAGE_CHOISED = "LANGUAGE_CHOISED";
 
+    private User user;
     private ExecutorService executor;
     private Handler handler;
-
     private SharedPreferences preferences;
 
     @Override
@@ -79,6 +82,7 @@ public class LoggedUser extends AppCompatActivity {
 
         String NAME_PREFERENCES = "LOGIN";
         preferences = getSharedPreferences(NAME_PREFERENCES,0);
+        user = getUserPreferences();
 
         // Initialization of the Async Method that obtains Activity information
         searchAsyncInternet();
@@ -109,6 +113,7 @@ public class LoggedUser extends AppCompatActivity {
 
             preferences.edit().putString(NAME_LOGIN, null).apply();
             preferences.edit().putString(PASSWORD_LOGIN, null).apply();
+            preferences.edit().putString(LANGUAGE_CHOISED, null).apply();
             preferences.edit().putBoolean(FIRST_LOGIN, true).apply();
 
             startActivity(new Intent(this, MainActivity.class));
@@ -137,6 +142,12 @@ public class LoggedUser extends AppCompatActivity {
             ip_user = getIp();
             json_dataIp = getDataPersonIp(ip_user);
             json_hello = getHelloForIp(ip_user);
+
+            if (user.getCode_language().equals("")){
+                json_hello = getHelloForIp(ip_user);
+            } else {
+                json_hello = getHelloForLanguage(user.getCode_language());
+            }
 
             // Process the data in Activity
             handler.post(() -> {
@@ -201,6 +212,18 @@ public class LoggedUser extends AppCompatActivity {
 
         Uri uriBuild = Uri.parse(URL_GET_HELLO).buildUpon()
                 .appendQueryParameter(PARAMETER_IP, ip)
+                .build();
+
+        return SearchInternet.searchByUrl(uriBuild.toString(), "GET");
+
+    }
+
+    private String getHelloForLanguage(String language){
+
+        final String PARAMETER_LANGUAGE = "lang";
+
+        Uri uriBuild = Uri.parse(URL_GET_HELLO).buildUpon()
+                .appendQueryParameter(PARAMETER_LANGUAGE, language)
                 .build();
 
         return SearchInternet.searchByUrl(uriBuild.toString(), "GET");
@@ -291,10 +314,21 @@ public class LoggedUser extends AppCompatActivity {
     }
 
     private void showMessageUser(Hello hello) {
-        txt_language.setText(String.format(getString(R.string.txt_langue),
-                hello.getLanguage()));
 
-        User user = getUserPreferences();
+        String lang = "";
+
+            List<String> code_languages = Arrays.asList(getResources().
+                    getStringArray(R.array.code_language));
+
+            if (code_languages.contains(hello.getLanguage())){
+                int position = code_languages.indexOf(hello.getLanguage());
+                List<String> languages = Arrays.asList(getResources().
+                        getStringArray(R.array.language));
+                lang = languages.get(position);
+            }
+
+        txt_language.setText(String.format(getString(R.string.txt_langue),
+                lang, "- " +hello.getLanguage()));
 
         if (preferences.getBoolean(FIRST_LOGIN, true)){
             txt_logged.setText(String.format(
@@ -360,8 +394,9 @@ public class LoggedUser extends AppCompatActivity {
 
         String name = preferences.getString(NAME_LOGIN, "User");
         String password = preferences.getString(PASSWORD_LOGIN, "");
+        String language = preferences.getString(LANGUAGE_CHOISED, "");
 
-        return new User(name,password);
+        return new User(name,password,language);
     }
 
 }

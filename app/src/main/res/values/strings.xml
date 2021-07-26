@@ -13,6 +13,8 @@
     <string name="error_internet">There is no Internet Connection</string>
     <string name="error_inputs">The <b>%s</b> field must be completed</string>
     <string name="incorrect_login"><b>Incorrect</b> Username or Password</string>
+    <string name="switch_language">Choose the language of the "Hello"</string>
+    <string name="hint_language">Language</string>
 
     <!--LoggedUser-->
     <string name="message_hello">%1$s %2$s, Welcome!</string>
@@ -23,7 +25,7 @@
     <string name="btn_moreAfterClick">More Details</string>
     <string name="title_details">Details</string>
     <string name="txt_ip">IP Address: %s</string>
-    <string name="txt_langue">Researched language: %s</string>
+    <string name="txt_langue">Researched language: %1$s %2$s</string>
     <string name="txt_errorMessage">Error IP: %s</string>
     <string name="txt_country">Country: %1$s - %2$s</string>
     <string name="txt_region">Region: %1$s - %2$s</string>
@@ -34,6 +36,127 @@
     <string name="error_detailsIP">Error Receiving IP Details</string>
     <string name="error_hello">Error Receiving Data for \'Hello\'</string>
 
+    <string-array name="language">
+        <item>Arabic</item>
+        <item>Azerbaijani</item>
+        <item>Belarusian </item>
+        <item>Bulgarian</item>
+        <item>Bengali</item>
+        <item>Bosnian</item>
+        <item>Czech</item>
+        <item>Danish</item>
+        <item>German</item>
+        <item>Dzongkha</item>
+        <item>Greek</item>
+        <item>English</item>
+        <item>English (United Kingdom)</item>
+        <item>English (United States)</item>
+        <item>Spanish</item>
+        <item>Estonian</item>
+        <item>Farsi</item>
+        <item>Finnish</item>
+        <item>Filipino</item>
+        <item>French</item>
+        <item>Hebrew</item>
+        <item>Hindi</item>
+        <item>Croatian</item>
+        <item>Hungarian</item>
+        <item>Armenian</item>
+        <item>Indonesian</item>
+        <item>Icelandic</item>
+        <item>Italian</item>
+        <item>Japanese</item>
+        <item>Georgian</item>
+        <item>Kazakh</item>
+        <item>Khmer</item>
+        <item>Korean</item>
+        <item>Letzeburgesch</item>
+        <item>Lao</item>
+        <item>Lithuanian</item>
+        <item>Latvian</item>
+        <item>Macedonian (FYROM)</item>
+        <item>Mongolian</item>
+        <item>Malaysian</item>
+        <item>Burmese</item>
+        <item>Nepali</item>
+        <item>Norwegian</item>
+        <item>Polish</item>
+        <item>Portuguese</item>
+        <item>Romanian</item>
+        <item>Russian</item>
+        <item>Slovak</item>
+        <item>Slovenian</item>
+        <item>Albanian</item>
+        <item>Serbian</item>
+        <item>Swedish</item>
+        <item>Suaíli</item>
+        <item>Thai</item>
+        <item>Turco</item>
+        <item>Ukrainian</item>
+        <item>Vietnamese</item>
+        <item>Chinese</item>
+    </string-array>
+
+    <string-array name="code_language">
+        <item>ar</item>
+        <item>az</item>
+        <item>be</item>
+        <item>bg</item>
+        <item>bn</item>
+        <item>bs</item>
+        <item>cs</item>
+        <item>da</item>
+        <item>de</item>
+        <item>dz</item>
+        <item>el</item>
+        <item>en</item>
+        <item>en-gb</item>
+        <item>en-us</item>
+        <item>es</item>
+        <item>et</item>
+        <item>fa</item>
+        <item>fi</item>
+        <item>fil</item>
+        <item>fr</item>
+        <item>he</item>
+        <item>hi</item>
+        <item>hr</item>
+        <item>hu</item>
+        <item>hy</item>
+        <item>id</item>
+        <item>is</item>
+        <item>it</item>
+        <item>ja</item>
+        <item>ka</item>
+        <item>kk</item>
+        <item>km</item>
+        <item>ko</item>
+        <item>lb</item>
+        <item>lo</item>
+        <item>lt</item>
+        <item>lv</item>
+        <item>mk</item>
+        <item>mn</item>
+        <item>ms</item>
+        <item>my</item>
+        <item>ne</item>
+        <item>no</item>
+        <item>pl</item>
+        <item>pt</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>sk</item>
+        <item>sl</item>
+        <item>sq</item>
+        <item>sr</item>
+        <item>sv</item>
+        <item>sw</item>
+        <item>th</item>
+        <item>tk</item>
+        <item>uk</item>
+        <item>vi</item>
+        <item>zh</item>
+    </string-array>
 
 
 </resources>

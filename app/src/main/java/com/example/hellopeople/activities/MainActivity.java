@@ -1,7 +1,5 @@
 package com.example.hellopeople.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,12 +9,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.hellopeople.R;
 import com.example.hellopeople.model.User;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -24,11 +27,16 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
+    private TextInputLayout layout_language;
+
     private TextInputEditText login;
     private TextInputEditText password;
 
     private TextInputLayout layout_name;
     private TextInputLayout layout_password;
+    private AutoCompleteTextView input_language;
+
+    private SwitchMaterial switch_languages;
 
     private Button btn_login;
     private Button btn_clear;
@@ -38,10 +46,13 @@ public class MainActivity extends AppCompatActivity {
     private final String NAME_LOGIN = "NAME";
     private final String PASSWORD_LOGIN = "PASSWORD";
     private final String FIRST_LOGIN = "FIRST_LOGIN";
+    private final String LANGUAGE_CHOISED = "LANGUAGE_CHOISED";
 
     private User user;
-
-    SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
+    private String language_choised;
+    private String[] languages;
+    private String[] code_languages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,17 +69,43 @@ public class MainActivity extends AppCompatActivity {
         layout_name = findViewById(R.id.layout_name);
         layout_password = findViewById(R.id.layout_password);
         hasLogin = findViewById(R.id.text_hasLogin);
+        input_language = findViewById(R.id.autoCompleteLanguage);
+        switch_languages = findViewById(R.id.switch_languages);
+        layout_language = findViewById(R.id.layout_language);
 
-        updateInfoLogin();
+        languages = getResources().getStringArray(R.array.language);
+        code_languages = getResources().getStringArray(R.array.code_language);
+        language_choised = "";
+
+        setButtonClear();
+        setUpInputLanguage();
+
+        switch_languages.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                layout_language.setVisibility(View.VISIBLE);
+            } else {
+                layout_language.setVisibility(View.GONE);
+            }
+        });
+
+        input_language.setOnItemClickListener((parent, view, position, id) ->
+                language_choised = code_languages[position]);
+
         listenerLogin();
         listenerClear();
+    }
+
+    private void setUpInputLanguage() {
+        ArrayAdapter<String> adapterLanguage = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, languages);
+        input_language.setAdapter(adapterLanguage);
     }
 
     private boolean existsLogin() {
         return sharedPreferences.getString(NAME_LOGIN, null) != null;
     }
 
-    private void updateInfoLogin(){
+    private void setButtonClear(){
         if (existsLogin()){
             btn_clear.setText(R.string.btn_logout);
             hasLogin.setVisibility(View.VISIBLE);
@@ -85,7 +122,14 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, R.string.error_internet, Toast.LENGTH_LONG)
                         .show();
             } else if (filledInputs()) {
+                
+                if (!language_choised.equals("")){
+                    sharedPreferences.edit().putString(LANGUAGE_CHOISED, language_choised).apply();
+                }
+                
+
                 if (existsLogin()) {
+                    
                     if (isCorrectLogin(user.getName(), user.getPassword())) {
                         sharedPreferences.edit().putBoolean(FIRST_LOGIN, false).apply();
                         startActivity(new Intent(this, LoggedUser.class));
@@ -94,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(this, R.string.incorrect_login, Toast.LENGTH_LONG)
                                 .show();
                     }
+                    
                 } else {
                     sharedPreferences.edit().putString(NAME_LOGIN, user.getName()).apply();
                     sharedPreferences.edit().putString(PASSWORD_LOGIN, user.getPassword()).apply();
@@ -160,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
 
         } else {
-            user = new User(text_name,text_password);
+            user = new User(text_name,text_password,language_choised);
             return true;
         }
     }
@@ -170,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
 
             login.setText("");
             password.setText("");
+            input_language.setText("",null);
 
             login.setError(null);
             password.setError(null);
@@ -185,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
                 sharedPreferences.edit().putString(NAME_LOGIN, null).apply();
                 sharedPreferences.edit().putString(PASSWORD_LOGIN, null).apply();
                 sharedPreferences.edit().putBoolean(FIRST_LOGIN, true).apply();
-                updateInfoLogin();
+                setButtonClear();
             }
         });
     }
