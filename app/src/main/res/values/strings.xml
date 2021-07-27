@@ -21,6 +21,7 @@
     <string name="step_threeHelp">- Click on the "Login" button</string>
 
     <!--LoggedUser-->
+    <string name="wait_search">Wait while we Search for the IP</string>
     <string name="message_hello">%1$s %2$s, Welcome!</string>
     <string name="message_successLogin">%1$s %2$s, You Have Successfully Logged In!</string>
     <string name="message_goodDay">Have a Great Day %s</string>
@@ -39,6 +40,8 @@
     <string name="txt_mobile">Search with Mobile: %s</string>
     <string name="error_detailsIP">Error Receiving IP Details</string>
     <string name="error_hello">Error Receiving Data for \'Hello\'</string>
+    <string name="error_search">Unable to get IP, Try Again</string>
+    <string name="message_noIp">Disable Proxy and Check Your Internet Connection</string>
 
     <string-array name="language">
         <item>Arabic</item>

@@ -3,6 +3,7 @@ package com.example.hellopeople.model;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,7 +13,7 @@ import java.net.URL;
 
 public class SearchInternet {
 
-    public static String searchByUrl(String url, String method){
+    public static String searchByUrl(String url, String method) {
 
         String result_search;
         HttpURLConnection connection = null;
@@ -29,13 +30,13 @@ public class SearchInternet {
 
             InputStream inputStream = connection.getInputStream();
 
-            if (inputStream != null){
+            if (inputStream != null) {
 
                 // Obtem uma Leitura do Resultado da Internet
                 reader = new BufferedReader(new InputStreamReader(inputStream));
 
                 // Irão Recuperar os Resultados
-                StringBuffer bufferResponse = new StringBuffer();
+                StringBuilder bufferResponse = new StringBuilder();
                 String line;
 
                 //Loop para a Leitura Linha por Linha
@@ -44,20 +45,24 @@ public class SearchInternet {
                 }
 
                 //Buffer sem Informações
-                if (bufferResponse.length() == 0) return null;
+                if (bufferResponse.length() == 0) return "";
 
                 result_search = bufferResponse.toString();
 
-            } else return null;
+            } else return "";
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
             Log.e("ERROR FORMED URL", "Error in URL Formation\n" + e);
-            return null;
+            return "";
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Log.e("NO DATA AVAILABLE", "Error recovery Data\n" + e);
+            return "";
         } catch (IOException e) {
             e.printStackTrace();
             Log.e("ERROR READ URL", "Error reading URL Connection\n" + e);
-            return null;
+            return "";
         } finally {
             //Fecha a Conexão
             if (connection != null) {

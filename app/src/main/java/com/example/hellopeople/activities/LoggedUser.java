@@ -47,6 +47,7 @@ public class LoggedUser extends AppCompatActivity {
     private TextView txt_timezone;
     private TextView txt_org;
     private TextView txt_mobile;
+    private TextView txt_search;
     private ProgressBar process_loading;
 
     private String ip_user = "";
@@ -105,6 +106,7 @@ public class LoggedUser extends AppCompatActivity {
         txt_timezone = findViewById(R.id.text_timezone);
         txt_org = findViewById(R.id.text_org);
         txt_mobile = findViewById(R.id.text_mobile);
+        txt_search = findViewById(R.id.text_search);
         process_loading = findViewById(R.id.progressBar_loading);
     }
 
@@ -138,8 +140,21 @@ public class LoggedUser extends AppCompatActivity {
 
         executor.execute(() -> {
 
-            // Get IP, IP Data, Helllo in Language for IP
+            // Get Extern IP Address
             ip_user = getIp();
+
+            if (ip_user.equals("")){
+                // Change Data in Window
+                handler.post(() -> {
+                    process_loading.setProgress(10);
+                    process_loading.setVisibility(View.GONE);
+                    txt_search.setText(R.string.error_search);
+                    Toast.makeText(this, R.string.message_noIp, Toast.LENGTH_LONG)
+                            .show();
+                });
+                return;
+            }
+
             json_dataIp = getDataPersonIp(ip_user);
             json_hello = getHelloForIp(ip_user);
 
@@ -180,6 +195,7 @@ public class LoggedUser extends AppCompatActivity {
                 // Show in Window the result of Async Method ---> Visible
                 process_loading.setProgress(10);
                 process_loading.setVisibility(View.GONE);
+                txt_search.setVisibility(View.GONE);
                 txt_logged.setVisibility(View.VISIBLE);
                 txt_goodday.setVisibility(View.VISIBLE);
                 button_more.setVisibility(View.VISIBLE);
@@ -317,15 +333,15 @@ public class LoggedUser extends AppCompatActivity {
 
         String lang = "";
 
-            List<String> code_languages = Arrays.asList(getResources().
-                    getStringArray(R.array.code_language));
+        List<String> code_languages = Arrays.asList(getResources().
+                getStringArray(R.array.code_language));
 
-            if (code_languages.contains(hello.getLanguage())){
-                int position = code_languages.indexOf(hello.getLanguage());
-                List<String> languages = Arrays.asList(getResources().
-                        getStringArray(R.array.language));
-                lang = languages.get(position);
-            }
+        if (code_languages.contains(hello.getLanguage())){
+            int position = code_languages.indexOf(hello.getLanguage());
+            List<String> languages = Arrays.asList(getResources().
+                    getStringArray(R.array.language));
+            lang = languages.get(position);
+        }
 
         txt_language.setText(String.format(getString(R.string.txt_langue),
                 lang, "- " +hello.getLanguage()));
