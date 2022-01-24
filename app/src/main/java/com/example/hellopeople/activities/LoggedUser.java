@@ -33,6 +33,13 @@ import java.util.concurrent.Executors;
 
 public class LoggedUser extends AppCompatActivity {
 
+    private static final String URL_GET_IP = "http://checkip.amazonaws.com";
+    private static final String URL_GET_DATA = "http://ip-api.com/json";
+    private static final String URL_GET_HELLO = "https://fourtonfish.com/hellosalut";
+    private final String NAME_LOGIN = "NAME";
+    private final String PASSWORD_LOGIN = "PASSWORD";
+    private final String FIRST_LOGIN = "FIRST_LOGIN";
+    private final String LANGUAGE_CHOISED = "LANGUAGE_CHOISED";
     private LinearLayout layout_more;
     private Button button_logout;
     private Button button_more;
@@ -49,20 +56,9 @@ public class LoggedUser extends AppCompatActivity {
     private TextView txt_mobile;
     private TextView txt_search;
     private ProgressBar process_loading;
-
     private String ip_user = "";
     private String json_dataIp = "";
     private String json_hello = "";
-
-    private static final String URL_GET_IP = "http://checkip.amazonaws.com";
-    private static final String URL_GET_DATA = "http://ip-api.com/json";
-    private static final String URL_GET_HELLO = "https://fourtonfish.com/hellosalut";
-
-    private final String NAME_LOGIN = "NAME";
-    private final String PASSWORD_LOGIN = "PASSWORD";
-    private final String FIRST_LOGIN = "FIRST_LOGIN";
-    private final String LANGUAGE_CHOISED = "LANGUAGE_CHOISED";
-
     private User user;
     private ExecutorService executor;
     private Handler handler;
@@ -82,7 +78,7 @@ public class LoggedUser extends AppCompatActivity {
         process_loading.setMax(10);
 
         String NAME_PREFERENCES = "LOGIN";
-        preferences = getSharedPreferences(NAME_PREFERENCES,0);
+        preferences = getSharedPreferences(NAME_PREFERENCES, 0);
         user = getUserPreferences();
 
         // Initialization of the Async Method that obtains Activity information
@@ -111,7 +107,7 @@ public class LoggedUser extends AppCompatActivity {
     }
 
     private void listenerLogout() {
-        button_logout.setOnClickListener( v-> {
+        button_logout.setOnClickListener(v -> {
 
             preferences.edit().putString(NAME_LOGIN, null).apply();
             preferences.edit().putString(PASSWORD_LOGIN, null).apply();
@@ -124,11 +120,11 @@ public class LoggedUser extends AppCompatActivity {
     }
 
     private void listenerSeeMore() {
-        button_more.setOnClickListener( v-> {
-            if (layout_more.getVisibility() == View.VISIBLE){
+        button_more.setOnClickListener(v -> {
+            if (layout_more.getVisibility() == View.VISIBLE) {
                 button_more.setText(R.string.btn_moreDefault);
                 layout_more.setVisibility(View.GONE);
-            } else{
+            } else {
                 button_more.setText(R.string.btn_moreAfterClick);
                 layout_more.setVisibility(View.VISIBLE);
             }
@@ -143,7 +139,7 @@ public class LoggedUser extends AppCompatActivity {
             // Get Extern IP Address
             ip_user = getIp();
 
-            if (ip_user.equals("")){
+            if (ip_user.equals("")) {
                 // Change Data in Window
                 handler.post(() -> {
                     process_loading.setProgress(10);
@@ -158,7 +154,7 @@ public class LoggedUser extends AppCompatActivity {
             json_dataIp = getDataPersonIp(ip_user);
             json_hello = getHelloForIp(ip_user);
 
-            if (user.getCode_language().equals("")){
+            if (user.getCode_language().equals("")) {
                 json_hello = getHelloForIp(ip_user);
             } else {
                 json_hello = getHelloForLanguage(user.getCode_language());
@@ -204,25 +200,25 @@ public class LoggedUser extends AppCompatActivity {
         });
     }
 
-    private String getIp(){
+    private String getIp() {
         return SearchInternet.searchByUrl(URL_GET_IP, "GET");
     }
 
-    private String getDataPersonIp(String ip){
+    private String getDataPersonIp(String ip) {
 
         final String PARAMETER_FIELD = "fields";
         final String fields = "status,message,country,countryCode,region,regionCode," +
                 "regionName,city,timezone,org,mobile,query";
 
-            Uri buildURI = Uri.parse(URL_GET_DATA).buildUpon()
-                    .appendPath(ip)
-                    .appendQueryParameter(PARAMETER_FIELD, fields)
-                    .build();
+        Uri buildURI = Uri.parse(URL_GET_DATA).buildUpon()
+                .appendPath(ip)
+                .appendQueryParameter(PARAMETER_FIELD, fields)
+                .build();
 
-            return SearchInternet.searchByUrl(buildURI.toString(), "GET");
+        return SearchInternet.searchByUrl(buildURI.toString(), "GET");
     }
 
-    private String getHelloForIp(String ip){
+    private String getHelloForIp(String ip) {
 
         final String PARAMETER_IP = "ip";
 
@@ -234,7 +230,7 @@ public class LoggedUser extends AppCompatActivity {
 
     }
 
-    private String getHelloForLanguage(String language){
+    private String getHelloForLanguage(String language) {
 
         final String PARAMETER_LANGUAGE = "lang";
 
@@ -245,21 +241,21 @@ public class LoggedUser extends AppCompatActivity {
         return SearchInternet.searchByUrl(uriBuild.toString(), "GET");
 
     }
-    
-    private Ip serialisationDataIp(String data){
+
+    private Ip serialisationDataIp(String data) {
 
         try {
 
-              String status, message, country, country_code, region, region_code,
-                      city, timeZone, org;
-              boolean isMobile;
+            String status, message, country, country_code, region, region_code,
+                    city, timeZone, org;
+            boolean isMobile;
 
             JSONObject jsonObject = new JSONObject(data);
 
             try {
                 status = jsonObject.getString("status");
 
-                if (status.equals("fail")){
+                if (status.equals("fail")) {
                     message = jsonObject.getString("message");
 
                     Ip ip = new Ip();
@@ -280,20 +276,20 @@ public class LoggedUser extends AppCompatActivity {
                 return new Ip(country, country_code, region, region_code, city,
                         timeZone, org, isMobile);
 
-            } catch (Exception e){
+            } catch (Exception e) {
                 Log.e("ERROR RECOVERY", "Error retrieving data from IP\n" + e);
                 e.printStackTrace();
                 return null;
             }
 
         } catch (JSONException e) {
-            Log.e("ERROR JSON","Error in creation JSON\n" + e);
+            Log.e("ERROR JSON", "Error in creation JSON\n" + e);
             e.printStackTrace();
             return null;
         }
     }
 
-    private Hello serialisationHello(String data){
+    private Hello serialisationHello(String data) {
 
         try {
 
@@ -304,7 +300,7 @@ public class LoggedUser extends AppCompatActivity {
             try {
                 langue = jsonObject.getString("code");
 
-                if (langue.equals("none")){
+                if (langue.equals("none")) {
                     langue = "Not Recognized";
                 }
 
@@ -315,14 +311,14 @@ public class LoggedUser extends AppCompatActivity {
 
                 return new Hello(langue, hello);
 
-            } catch (Exception e){
+            } catch (Exception e) {
                 Log.e("ERROR RECOVERY", "Error retrieving data from IP\n" + e);
                 e.printStackTrace();
                 return null;
             }
 
         } catch (JSONException e) {
-            Log.e("ERROR JSON","Error in creation JSON\n" + e);
+            Log.e("ERROR JSON", "Error in creation JSON\n" + e);
             e.printStackTrace();
             return null;
         }
@@ -336,7 +332,7 @@ public class LoggedUser extends AppCompatActivity {
         List<String> code_languages = Arrays.asList(getResources().
                 getStringArray(R.array.code_language));
 
-        if (code_languages.contains(hello.getLanguage())){
+        if (code_languages.contains(hello.getLanguage())) {
             int position = code_languages.indexOf(hello.getLanguage());
             List<String> languages = Arrays.asList(getResources().
                     getStringArray(R.array.language));
@@ -344,20 +340,20 @@ public class LoggedUser extends AppCompatActivity {
         }
 
         txt_language.setText(String.format(getString(R.string.txt_langue),
-                lang, "- " +hello.getLanguage()));
+                lang, "- " + hello.getLanguage()));
 
-        if (preferences.getBoolean(FIRST_LOGIN, true)){
-            txt_logged.setText(String.format(
-                    getString(R.string.message_successLogin), hello.getHello(), user.getName()));
+        if (preferences.getBoolean(FIRST_LOGIN, true)) {
+            txt_logged.setText(Html.fromHtml(getString(R.string.message_successLogin,
+                    hello.getHello(), user.getName())));
 
             preferences.edit().putBoolean(FIRST_LOGIN, false).apply();
 
         } else {
-            txt_logged.setText(String.format(
-                    getString(R.string.message_hello), hello.getHello(), user.getName()));
+            txt_logged.setText(Html.fromHtml(getString(R.string.message_hello,
+                    hello.getHello(), user.getName())));
         }
 
-        txt_goodday.setText(String.format(getString(R.string.message_goodDay), user.getName()));
+        txt_goodday.setText(Html.fromHtml(getString(R.string.message_goodDay, user.getName())));
     }
 
     private void showDetailsIp(Ip ip) {
@@ -376,10 +372,10 @@ public class LoggedUser extends AppCompatActivity {
 
             txt_errorMessage.setText(String.format(getString
                     (R.string.txt_errorMessage), ip.getMessage_error()));
-        } else{
+        } else {
 
             // If the details is Not Visible
-            if (txt_errorMessage.getVisibility() == View.VISIBLE){
+            if (txt_errorMessage.getVisibility() == View.VISIBLE) {
                 txt_errorMessage.setVisibility(View.GONE);
                 txt_country.setVisibility(View.VISIBLE);
                 txt_region.setVisibility(View.VISIBLE);
@@ -397,7 +393,7 @@ public class LoggedUser extends AppCompatActivity {
             txt_city.setText(String.format(getString(R.string.txt_city), ip.getCity()));
             txt_timezone.setText(String.format(getString(R.string.txt_timezone), ip.getTimeZone()));
             txt_org.setText(String.format(getString(R.string.txt_organization), ip.getOrg()));
-            if (ip.isMobile()){
+            if (ip.isMobile()) {
                 // isMobile = True
                 txt_mobile.setText(String.format(getString(R.string.txt_mobile), "Yes"));
             } else {
@@ -412,7 +408,7 @@ public class LoggedUser extends AppCompatActivity {
         String password = preferences.getString(PASSWORD_LOGIN, "");
         String language = preferences.getString(LANGUAGE_CHOISED, "");
 
-        return new User(name,password,language);
+        return new User(name, password, language);
     }
 
 }

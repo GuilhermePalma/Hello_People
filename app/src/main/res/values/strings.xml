@@ -22,9 +22,9 @@
 
     <!--LoggedUser-->
     <string name="wait_search">Wait while we Search for the IP</string>
-    <string name="message_hello">%1$s %2$s, Welcome!</string>
-    <string name="message_successLogin">%1$s %2$s, You Have Successfully Logged In!</string>
-    <string name="message_goodDay">Have a Great Day %s</string>
+    <string name="message_hello">&lt;b>%1$s %2$s&lt;/b>, Welcome!</string>
+    <string name="message_successLogin">&lt;b>%1$s %2$s&lt;/b>, You Have Successfully Logged In!</string>
+    <string name="message_goodDay">Have a Great Day &lt;b>%s&lt;/b></string>
     <string name="btn_logout">Logout</string>
     <string name="btn_moreDefault">More Details</string>
     <string name="btn_moreAfterClick">More Details</string>
@@ -164,6 +164,5 @@
         <item>uk</item>
         <item>vi</item>
     </string-array>
-
 
 </resources>
