@@ -3,7 +3,6 @@ package com.example.hellopeople.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -41,8 +40,13 @@ public class LoggedUser extends AppCompatActivity {
         // Instancia os Itens
         instanceItems();
 
-        // Obtem os Dados (IP e seus Detalhes, "Hello" Traduzido) das APIs
-        searchAsyncInternet();
+        if (user == null) {
+            showDetailsIp(null);
+            Toast.makeText(LoggedUser.this, R.string.error_hello, Toast.LENGTH_LONG).show();
+        } else {
+            // Obtem os Dados (IP e seus Detalhes, "Hello" Traduzido) das APIs
+            searchAsyncInternet();
+        }
 
         // Listener dos dois botões Inferiores
         listenerLogout();
@@ -128,12 +132,8 @@ public class LoggedUser extends AppCompatActivity {
                     Resources.stringIsNullOrEmpty(codeLanguage) ? null : codeLanguage);
 
             if (hello == null) {
-                runOnUiThread(() -> {
-                    Toast.makeText(this, R.string.error_hello,
-                            Toast.LENGTH_LONG).show();
-
-                    Log.e("ERROR HELLO", "Unable to retrieve 'hello' by IP");
-                });
+                runOnUiThread(() -> Toast.makeText(this, R.string.error_hello,
+                        Toast.LENGTH_LONG).show());
             } else runOnUiThread(() -> showMessageUser(hello));
 
             runOnUiThread(() -> {

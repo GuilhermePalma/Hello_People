@@ -20,6 +20,8 @@
         - If you wish, click on "Choose the Language of the Hello" to customize your "Hello"<br/>
         - Click on the "Login" button
     </string>
+    <string name="txt_rememberLogin">Remember User</string>
+
     <!--LoggedUser-->
     <string name="wait_search">Wait while we Search for the IP</string>
     <string name="message_hello">&lt;b>%1$s %2$s&lt;/b>, Welcome!</string>

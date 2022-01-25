@@ -12,20 +12,12 @@ public class ManagerSharedPreferences {
     private static final String PASSWORD_LOGIN = "PASSWORD";
     private static final String FIRST_LOGIN = "FIRST_LOGIN";
     private static final String LANGUAGE_CHOOSE = "LANGUAGE_CHOOSE";
+    private static final String REMEMBER_LOGIN = "REMEMBER_LOGIN";
     final private SharedPreferences sharedPreferences;
 
     // Construtor da Classe
     public ManagerSharedPreferences(Context context) {
         sharedPreferences = context.getSharedPreferences(NAME_PREFERENCE, 0);
-    }
-
-    /**
-     * Retorna se Existe ou não um Login no APP
-     *
-     * @return true|false
-     */
-    public boolean hasLogin() {
-        return sharedPreferences.getString(NAME_LOGIN, null) != null;
     }
 
     /**
@@ -49,16 +41,12 @@ public class ManagerSharedPreferences {
                 userSaved.getPassword().equals(userCheck.getPassword());
     }
 
-    // Setters das SharedPreferences
-
     /**
      * Obtem o Usuario salvo nas SharedPreferences
      *
      * @return {@link User}|null
      */
     public User getUserPreferences() {
-        if (!hasLogin()) return null;
-
         return new User(sharedPreferences.getString(NAME_LOGIN, null),
                 sharedPreferences.getString(PASSWORD_LOGIN, null),
                 sharedPreferences.getString(LANGUAGE_CHOOSE, null));
@@ -82,8 +70,6 @@ public class ManagerSharedPreferences {
         sharedPreferences.edit().putString(LANGUAGE_CHOOSE, language).apply();
     }
 
-    // Getters das SharedPreferences
-
     /**
      * Obtem nas {@link SharedPreferences} se é ou não o Primeiro Acesso do Usuario no APP
      *
@@ -98,5 +84,21 @@ public class ManagerSharedPreferences {
      */
     public void setFirstLogin(boolean isFirstLogin) {
         sharedPreferences.edit().putBoolean(FIRST_LOGIN, isFirstLogin).apply();
+    }
+
+    /**
+     * Retorna se Existe ou não um Login no APP
+     *
+     * @return true|false
+     */
+    public boolean getRememberLogin() {
+        return sharedPreferences.getBoolean(REMEMBER_LOGIN, false);
+    }
+
+    /**
+     * Salva nas {@link SharedPreferences} a Opção de Lembrar Login
+     */
+    public void setRememberLogin(boolean isRemember) {
+        sharedPreferences.edit().putBoolean(REMEMBER_LOGIN, isRemember).apply();
     }
 }

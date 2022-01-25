@@ -20,6 +20,7 @@ import com.example.hellopeople.R;
 import com.example.hellopeople.entity.User;
 import com.example.hellopeople.utils.ManagerSharedPreferences;
 import com.example.hellopeople.utils.Resources;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -34,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
     private TextInputEditText login;
     private TextInputEditText password;
+    private MaterialCheckBox checkBox;
+
+    private boolean isRememberLogin;
 
     private TextInputLayout layout_name;
     private TextInputLayout layout_password;
@@ -51,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
         // Instacia os Itens Necessarios
         instanceItems();
 
+        // Verifica se o Usuario Optou por não lembrar Login, mas há um cadastro
+        if(!isRememberLogin && sharedPreferences.getUserPreferences() != null){
+            sharedPreferences.resetSharedPreferences();
+        }
+
         // Configura os Botões Exibidos e o Input dos Idiomas
         setButtonForm();
         setUpLanguage();
@@ -65,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         context = MainActivity.this;
         sharedPreferences = new ManagerSharedPreferences(context);
         user = new User();
+        isRememberLogin = sharedPreferences.getRememberLogin();
 
         login = findViewById(R.id.edit_name);
         password = findViewById(R.id.edit_password);
@@ -73,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         layout_password = findViewById(R.id.layout_password);
         input_language = findViewById(R.id.autoCompleteLanguage);
         layout_language = findViewById(R.id.layout_language);
+        checkBox = findViewById(R.id.checkbox_rememberLogin);
     }
 
     /**
@@ -80,13 +91,10 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setButtonForm() {
         TextView hasLogin = findViewById(R.id.text_hasLogin);
-        if (sharedPreferences.hasLogin()) {
-            btn_clear.setText(R.string.btn_logout);
-            hasLogin.setVisibility(View.VISIBLE);
-        } else {
-            btn_clear.setText(R.string.btn_clear);
-            hasLogin.setVisibility(View.GONE);
-        }
+
+        btn_clear.setText(isRememberLogin ? R.string.btn_logout : R.string.btn_clear);
+        hasLogin.setVisibility(isRememberLogin ? View.VISIBLE : View.GONE);
+        checkBox.setChecked(isRememberLogin);
     }
 
     /**
@@ -143,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(context, R.string.error_internet, Toast.LENGTH_LONG).show();
             } else if (isFilledInputs()) {
                 // Verifica se já existe um User Logado
-                if (sharedPreferences.hasLogin()) {
+                if (isRememberLogin) {
                     // Compara os Dados inseridos com os Dados Salvos do User
                     if (sharedPreferences.checkCredentialUser(user)) {
                         // Caso o Usuario tenha Selecionado um Idioma, salva ele nas SharedPreferences
@@ -160,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
                     // Como não há User logado, salva as Informações do User nas SharedPreferences
                     sharedPreferences.setUserPreferences(user);
                     sharedPreferences.setFirstLogin(true);
+                    sharedPreferences.setRememberLogin(checkBox.isChecked());
                     startActivity(new Intent(context, LoggedUser.class));
                     finish();
                 }
@@ -234,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
                 layout_password.setBoxStrokeColor(getColor(R.color.purple_500));
             }
 
-            if (sharedPreferences.hasLogin()) {
+            if (isRememberLogin) {
                 // Limpa a SharedPrefernces e Atualiza o Layout dos Botões
                 sharedPreferences.resetSharedPreferences();
                 setButtonForm();
