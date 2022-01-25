@@ -35,9 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
     private TextInputEditText login;
     private TextInputEditText password;
-    private MaterialCheckBox checkBox;
 
-    private boolean isRememberLogin;
+    private boolean hasLogin;
 
     private TextInputLayout layout_name;
     private TextInputLayout layout_password;
@@ -56,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         instanceItems();
 
         // Verifica se o Usuario Optou por não lembrar Login, mas há um cadastro
-        if(!isRememberLogin && sharedPreferences.getUserPreferences() != null){
+        if(!hasLogin && sharedPreferences.getUserPreferences() != null){
             sharedPreferences.resetSharedPreferences();
         }
 
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         context = MainActivity.this;
         sharedPreferences = new ManagerSharedPreferences(context);
         user = new User();
-        isRememberLogin = sharedPreferences.getRememberLogin();
+        hasLogin = sharedPreferences.hasLogin();
 
         login = findViewById(R.id.edit_name);
         password = findViewById(R.id.edit_password);
@@ -83,18 +82,16 @@ public class MainActivity extends AppCompatActivity {
         layout_password = findViewById(R.id.layout_password);
         input_language = findViewById(R.id.autoCompleteLanguage);
         layout_language = findViewById(R.id.layout_language);
-        checkBox = findViewById(R.id.checkbox_rememberLogin);
     }
 
     /**
      * Configura os Botões que serão exibidos no Formulario de Login
      */
     private void setButtonForm() {
-        TextView hasLogin = findViewById(R.id.text_hasLogin);
+        TextView text_hasLogin = findViewById(R.id.text_hasLogin);
 
-        btn_clear.setText(isRememberLogin ? R.string.btn_logout : R.string.btn_clear);
-        hasLogin.setVisibility(isRememberLogin ? View.VISIBLE : View.GONE);
-        checkBox.setChecked(isRememberLogin);
+        btn_clear.setText(hasLogin ? R.string.btn_logout : R.string.btn_clear);
+        text_hasLogin.setVisibility(hasLogin ? View.VISIBLE : View.GONE);
     }
 
     /**
@@ -151,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(context, R.string.error_internet, Toast.LENGTH_LONG).show();
             } else if (isFilledInputs()) {
                 // Verifica se já existe um User Logado
-                if (isRememberLogin) {
+                if (hasLogin) {
                     // Compara os Dados inseridos com os Dados Salvos do User
                     if (sharedPreferences.checkCredentialUser(user)) {
                         // Caso o Usuario tenha Selecionado um Idioma, salva ele nas SharedPreferences
@@ -168,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
                     // Como não há User logado, salva as Informações do User nas SharedPreferences
                     sharedPreferences.setUserPreferences(user);
                     sharedPreferences.setFirstLogin(true);
-                    sharedPreferences.setRememberLogin(checkBox.isChecked());
                     startActivity(new Intent(context, LoggedUser.class));
                     finish();
                 }
@@ -243,9 +239,10 @@ public class MainActivity extends AppCompatActivity {
                 layout_password.setBoxStrokeColor(getColor(R.color.purple_500));
             }
 
-            if (isRememberLogin) {
+            if (hasLogin) {
                 // Limpa a SharedPrefernces e Atualiza o Layout dos Botões
                 sharedPreferences.resetSharedPreferences();
+                hasLogin = false;
                 setButtonForm();
             }
         });

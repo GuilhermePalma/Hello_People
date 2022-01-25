@@ -12,7 +12,6 @@ public class ManagerSharedPreferences {
     private static final String PASSWORD_LOGIN = "PASSWORD";
     private static final String FIRST_LOGIN = "FIRST_LOGIN";
     private static final String LANGUAGE_CHOOSE = "LANGUAGE_CHOOSE";
-    private static final String REMEMBER_LOGIN = "REMEMBER_LOGIN";
     final private SharedPreferences sharedPreferences;
 
     // Construtor da Classe
@@ -91,14 +90,7 @@ public class ManagerSharedPreferences {
      *
      * @return true|false
      */
-    public boolean getRememberLogin() {
-        return sharedPreferences.getBoolean(REMEMBER_LOGIN, false);
-    }
-
-    /**
-     * Salva nas {@link SharedPreferences} a Opção de Lembrar Login
-     */
-    public void setRememberLogin(boolean isRemember) {
-        sharedPreferences.edit().putBoolean(REMEMBER_LOGIN, isRemember).apply();
+    public boolean hasLogin() {
+        return sharedPreferences.getString(NAME_LOGIN, null) != null;
     }
 }
