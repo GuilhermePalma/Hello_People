@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,13 +17,13 @@ import com.example.hellopeople.entity.Ip;
 import com.example.hellopeople.entity.User;
 import com.example.hellopeople.utils.ManagerSharedPreferences;
 import com.example.hellopeople.utils.Resources;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class LoggedUser extends AppCompatActivity {
 
-    private LinearLayout layout_more;
     private Button button_more;
     private TextView txt_logged;
     private TextView txt_goodDay;
@@ -77,7 +76,7 @@ public class LoggedUser extends AppCompatActivity {
     }
 
     private void listenerSeeMore() {
-        layout_more = findViewById(R.id.layout_more);
+        MaterialCardView layout_more = findViewById(R.id.layout_more);
         button_more.setOnClickListener(v -> {
             if (layout_more.getVisibility() == View.VISIBLE) {
                 button_more.setText(R.string.btn_moreDefault);

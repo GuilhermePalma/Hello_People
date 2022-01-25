@@ -94,101 +94,107 @@
             android:visibility="gone" />
     </LinearLayout>
 
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/layout_more"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_grey"
-        android:orientation="vertical"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:layout_margin="10dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="@color/light_grey"
+        app:strokeWidth="1dp">
 
-        <TextView
-            android:id="@+id/text_details"
-            style="@style/title_more"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/title_details" />
+            android:orientation="vertical"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/text_ip"
-            style="@style/text_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/txt_ip" />
+            <TextView
+                android:id="@+id/text_details"
+                style="@style/title_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/title_details" />
 
-        <TextView
-            android:id="@+id/text_language"
-            style="@style/text_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/txt_langue" />
+            <TextView
+                android:id="@+id/text_ip"
+                style="@style/text_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/txt_ip" />
 
-        <TextView
-            android:id="@+id/text_errorMessage"
-            style="@style/text_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/txt_errorMessage"
-            android:visibility="gone" />
+            <TextView
+                android:id="@+id/text_language"
+                style="@style/text_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/txt_langue" />
 
-        <TextView
-            android:id="@+id/text_country"
-            style="@style/text_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/txt_country" />
+            <TextView
+                android:id="@+id/text_errorMessage"
+                style="@style/text_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/txt_errorMessage"
+                android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/text_region"
-            style="@style/text_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/txt_region" />
+            <TextView
+                android:id="@+id/text_country"
+                style="@style/text_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/txt_country" />
 
-        <TextView
-            android:id="@+id/text_city"
-            style="@style/text_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/txt_city" />
+            <TextView
+                android:id="@+id/text_region"
+                style="@style/text_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/txt_region" />
 
-        <TextView
-            android:id="@+id/text_timezone"
-            style="@style/text_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/txt_timezone" />
+            <TextView
+                android:id="@+id/text_city"
+                style="@style/text_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/txt_city" />
 
-        <TextView
-            android:id="@+id/text_org"
-            style="@style/text_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/txt_organization" />
+            <TextView
+                android:id="@+id/text_timezone"
+                style="@style/text_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/txt_timezone" />
 
-        <TextView
-            android:id="@+id/text_mobile"
-            style="@style/text_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/txt_mobile" />
+            <TextView
+                android:id="@+id/text_org"
+                style="@style/text_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/txt_organization" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/text_mobile"
+                style="@style/text_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/txt_mobile" />
 
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
