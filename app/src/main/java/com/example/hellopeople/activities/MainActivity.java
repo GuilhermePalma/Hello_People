@@ -11,16 +11,16 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.hellopeople.R;
 import com.example.hellopeople.entity.User;
 import com.example.hellopeople.utils.ManagerSharedPreferences;
 import com.example.hellopeople.utils.Resources;
-import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -28,6 +28,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+    private ConstraintLayout constraintLayoutMain;
 
     private Context context;
     private ManagerSharedPreferences sharedPreferences;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         instanceItems();
 
         // Verifica se o Usuario Optou por não lembrar Login, mas há um cadastro
-        if(!hasLogin && sharedPreferences.getUserPreferences() != null){
+        if (!hasLogin && sharedPreferences.getUserPreferences() != null) {
             sharedPreferences.resetSharedPreferences();
         }
 
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         layout_password = findViewById(R.id.layout_password);
         input_language = findViewById(R.id.autoCompleteLanguage);
         layout_language = findViewById(R.id.layout_language);
+        constraintLayoutMain = findViewById(R.id.constraint_main);
     }
 
     /**
@@ -145,7 +147,8 @@ public class MainActivity extends AppCompatActivity {
         btn_login.setOnClickListener(v -> {
             // Verifica se há conexão com a Internet e se os Inputs forão Preenchidps
             if (!Resources.hasConnectionAvailable(context)) {
-                Toast.makeText(context, R.string.error_internet, Toast.LENGTH_LONG).show();
+                Snackbar.make(constraintLayoutMain, R.string.error_internet,
+                        Snackbar.LENGTH_LONG).show();
             } else if (isFilledInputs()) {
                 // Verifica se já existe um User Logado
                 if (hasLogin) {
@@ -159,7 +162,8 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(new Intent(context, LoggedUser.class));
                         finish();
                     } else {
-                        Toast.makeText(context, R.string.incorrect_login, Toast.LENGTH_LONG).show();
+                        Snackbar.make(constraintLayoutMain, R.string.incorrect_login,
+                                Snackbar.LENGTH_LONG).show();
                     }
                 } else {
                     // Como não há User logado, salva as Informações do User nas SharedPreferences

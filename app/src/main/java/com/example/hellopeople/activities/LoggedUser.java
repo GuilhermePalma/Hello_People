@@ -7,9 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.hellopeople.R;
 import com.example.hellopeople.entity.Hello;
@@ -18,12 +18,14 @@ import com.example.hellopeople.entity.User;
 import com.example.hellopeople.utils.ManagerSharedPreferences;
 import com.example.hellopeople.utils.Resources;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class LoggedUser extends AppCompatActivity {
 
+    private ConstraintLayout constraintLayout;
     private Button button_more;
     private TextView txt_logged;
     private TextView txt_goodDay;
@@ -41,7 +43,7 @@ public class LoggedUser extends AppCompatActivity {
 
         if (user == null) {
             showDetailsIp(null);
-            Toast.makeText(LoggedUser.this, R.string.error_hello, Toast.LENGTH_LONG).show();
+            Snackbar.make(constraintLayout, R.string.error_hello, Snackbar.LENGTH_LONG).show();
         } else {
             // Obtem os Dados (IP e seus Detalhes, "Hello" Traduzido) das APIs
             searchAsyncInternet();
@@ -61,6 +63,7 @@ public class LoggedUser extends AppCompatActivity {
         txt_goodDay = findViewById(R.id.text_goodday);
         preferences = new ManagerSharedPreferences(LoggedUser.this);
         user = preferences.getUserPreferences();
+        constraintLayout = findViewById(R.id.constraint_logged);
     }
 
     /**
@@ -111,8 +114,8 @@ public class LoggedUser extends AppCompatActivity {
                     showDetailsIp(null);
                     process_loading.setVisibility(View.GONE);
                     txt_search.setText(R.string.error_search);
-                    Toast.makeText(this, R.string.message_noIp, Toast.LENGTH_LONG)
-                            .show();
+
+                    Snackbar.make(constraintLayout, R.string.message_noIp, Snackbar.LENGTH_LONG).show();
                 });
                 return;
             }
@@ -131,8 +134,8 @@ public class LoggedUser extends AppCompatActivity {
                     Resources.stringIsNullOrEmpty(codeLanguage) ? null : codeLanguage);
 
             if (hello == null) {
-                runOnUiThread(() -> Toast.makeText(this, R.string.error_hello,
-                        Toast.LENGTH_LONG).show());
+                runOnUiThread(() -> Snackbar.make(constraintLayout, R.string.error_hello,
+                        Snackbar.LENGTH_LONG).show());
             } else runOnUiThread(() -> showMessageUser(hello));
 
             runOnUiThread(() -> {
