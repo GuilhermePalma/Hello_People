@@ -128,11 +128,12 @@
                         android:visibility="gone">
 
                         <AutoCompleteTextView
+                            android:labelFor="@id/layout_language"
                             android:id="@+id/autoCompleteLanguage"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="none"
-                            tools:targetApi="JELLY_BEAN_MR1" />
+                            tools:ignore="LabelFor" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 

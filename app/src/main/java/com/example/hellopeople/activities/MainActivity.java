@@ -25,6 +25,8 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -113,6 +115,10 @@ public class MainActivity extends AppCompatActivity {
         input_language.setOnItemClickListener((parent, view, position, id) ->
                 user.setCode_language(code_languages[position]));
 
+        // Adiciona o Hint do AutoCompleteText das Language caso seja Necessario
+        if (Build.VERSION.SDK_INT <  Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            input_language.setHint(R.string.hint_language);
+        }
 
         // Configura o Switch que exibe ou não o Input dos Idiomas
         SwitchMaterial switch_languages = findViewById(R.id.switch_languages);
