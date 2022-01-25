@@ -38,9 +38,9 @@ public class Hello {
     public static Hello getHelloAPI(Context context, ExecutorService executorService, String ip, String idiom) {
         Hello hello = null;
         try {
-            String param = Resources.stringIsNullOrEmpty(idiom)
-                    ? SearchInternet.PARAMETER_IP_HELLO : SearchInternet.PARAMETER_IDIOM_HELLO;
-            String attr = Resources.stringIsNullOrEmpty(idiom) ? ip : idiom;
+            final boolean emptyIdiom = Resources.stringIsNullOrEmpty(idiom);
+            String param = emptyIdiom ? SearchInternet.PARAMETER_IP_HELLO : SearchInternet.PARAMETER_IDIOM_HELLO;
+            String attr = emptyIdiom ? ip : idiom;
 
             Uri uriBuild = Uri.parse(SearchInternet.URL_HELLO).buildUpon()
                     .appendQueryParameter(param, attr).build();
@@ -61,8 +61,11 @@ public class Hello {
                         ? ""
                         : Html.fromHtml(jsonObject.getString("hello")).toString());
 
-                if (!jsonObject.isNull("code")) {
+                if (!emptyIdiom) {
+                    hello.setLanguage(idiom);
+                } else if (!jsonObject.isNull("code")) {
                     String code = jsonObject.getString("code");
+
                     if (!code.equals("none")) {
                         hello.setCodeLanguage(code);
 
@@ -70,10 +73,11 @@ public class Hello {
                                 context.getResources().getStringArray(R.array.code_language));
 
                         int index = code_languages.indexOf(hello.getCodeLanguage());
+
                         if (index != -1) {
-                            // Obtem a Lista de Idiomas e o Item na Posição encontrada
                             List<String> languages = Arrays.asList(
                                     context.getResources().getStringArray(R.array.language));
+                            // Obtem a Lista de Idiomas e o Item na Posição encontrada
                             hello.setLanguage(languages.get(index));
                         }
                     } else {
