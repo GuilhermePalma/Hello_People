@@ -2,9 +2,6 @@ package com.example.hellopeople.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,7 +17,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hellopeople.R;
-import com.example.hellopeople.model.User;
+import com.example.hellopeople.entity.User;
+import com.example.hellopeople.utils.ManagerSharedPreferences;
+import com.example.hellopeople.utils.Resources;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -29,6 +28,8 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Context context;
+    private ManagerSharedPreferences sharedPreferences;
     private TextInputLayout layout_language;
 
     private TextInputEditText login;
@@ -38,96 +39,48 @@ public class MainActivity extends AppCompatActivity {
     private TextInputLayout layout_password;
     private AutoCompleteTextView input_language;
 
-    private SwitchMaterial switch_languages;
-
-    private Button btn_login;
     private Button btn_clear;
-    private ImageButton help;
-
-    private TextView hasLogin;
-
-    private final String NAME_LOGIN = "NAME";
-    private final String PASSWORD_LOGIN = "PASSWORD";
-    private final String FIRST_LOGIN = "FIRST_LOGIN";
-    private final String LANGUAGE_CHOISED = "LANGUAGE_CHOISED";
 
     private User user;
-    private SharedPreferences sharedPreferences;
-    private String language_choised;
-    private String[] languages;
-    private String[] code_languages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String NAME_PREFERENCES = "LOGIN";
-        sharedPreferences = getSharedPreferences(NAME_PREFERENCES,0);
+        // Instacia os Itens Necessarios
+        instanceItems();
 
-        login = findViewById(R.id.edit_name);
-        password = findViewById(R.id.edit_password);
-        btn_login = findViewById(R.id.btn_login);
-        btn_clear = findViewById(R.id.btn_clear);
-        layout_name = findViewById(R.id.layout_name);
-        layout_password = findViewById(R.id.layout_password);
-        hasLogin = findViewById(R.id.text_hasLogin);
-        input_language = findViewById(R.id.autoCompleteLanguage);
-        switch_languages = findViewById(R.id.switch_languages);
-        layout_language = findViewById(R.id.layout_language);
-        help = findViewById(R.id.imgbtn_help);
+        // Configura os Botões Exibidos e o Input dos Idiomas
+        setButtonForm();
+        setUpLanguage();
 
-        languages = getResources().getStringArray(R.array.language);
-        code_languages = getResources().getStringArray(R.array.code_language);
-        language_choised = "";
-
-        setButtonClear();
-        setUpInputLanguage();
-
-        switch_languages.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                layout_language.setVisibility(View.VISIBLE);
-            } else {
-                layout_language.setVisibility(View.GONE);
-            }
-        });
-
-        input_language.setOnItemClickListener((parent, view, position, id) ->
-                language_choised = code_languages[position]);
-
+        // Listener dos Botões do APP
         listenerHelp();
         listenerLogin();
         listenerClear();
     }
 
-    // Listener do Button Help
-    private void listenerHelp() {
-        help.setOnClickListener( v-> {
-            AlertDialog alert_help = new AlertDialog.Builder(this).create();
+    private void instanceItems() {
+        context = MainActivity.this;
+        sharedPreferences = new ManagerSharedPreferences(context);
+        user = new User();
 
-            alert_help.setTitle(getString(R.string.title_help));
-            alert_help.setMessage(getString(R.string.step_oneHelp) + "\n" +
-                    getString(R.string.step_twoHelp) + "\n" + getString(R.string.step_threeHelp));
-
-            alert_help.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
-                    (dialog, which) -> alert_help.dismiss());
-
-            alert_help.show();
-        });
+        login = findViewById(R.id.edit_name);
+        password = findViewById(R.id.edit_password);
+        btn_clear = findViewById(R.id.btn_clear);
+        layout_name = findViewById(R.id.layout_name);
+        layout_password = findViewById(R.id.layout_password);
+        input_language = findViewById(R.id.autoCompleteLanguage);
+        layout_language = findViewById(R.id.layout_language);
     }
 
-    private void setUpInputLanguage() {
-        ArrayAdapter<String> adapterLanguage = new ArrayAdapter<>(this,
-                android.R.layout.simple_dropdown_item_1line, languages);
-        input_language.setAdapter(adapterLanguage);
-    }
-
-    private boolean existsLogin() {
-        return sharedPreferences.getString(NAME_LOGIN, null) != null;
-    }
-
-    private void setButtonClear(){
-        if (existsLogin()){
+    /**
+     * Configura os Botões que serão exibidos no Formulario de Login
+     */
+    private void setButtonForm() {
+        TextView hasLogin = findViewById(R.id.text_hasLogin);
+        if (sharedPreferences.hasLogin()) {
             btn_clear.setText(R.string.btn_logout);
             hasLogin.setVisibility(View.VISIBLE);
         } else {
@@ -136,113 +89,140 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Configura o Input que exibe os Idiomas do "Ola"
+     */
+    private void setUpLanguage() {
+        // Obtem os Arrays dos Dados Usados para a Seleção do Idioma
+        String[] languages = getResources().getStringArray(R.array.language);
+        String[] code_languages = getResources().getStringArray(R.array.code_language);
+
+        // Configura a Lista de Idiomas Disponiveis
+        ArrayAdapter<String> adapterLanguage = new ArrayAdapter<>(context,
+                android.R.layout.simple_dropdown_item_1line, languages);
+        input_language.setAdapter(adapterLanguage);
+
+        // Obtem o Codigo do Idioma que o Usuario Selecionou
+        input_language.setOnItemClickListener((parent, view, position, id) ->
+                user.setCode_language(code_languages[position]));
+
+
+        // Configura o Switch que exibe ou não o Input dos Idiomas
+        SwitchMaterial switch_languages = findViewById(R.id.switch_languages);
+        switch_languages.setOnCheckedChangeListener((buttonView, isChecked) ->
+                layout_language.setVisibility(isChecked ? View.VISIBLE : View.GONE));
+    }
+
+    /**
+     * Listener do Button Help
+     */
+    private void listenerHelp() {
+        ImageButton imgBtn_help = findViewById(R.id.imgbtn_help);
+        imgBtn_help.setOnClickListener(v -> {
+            // Confifura e Exibe um AlertDialog ao Clicar no Botão
+            AlertDialog alert_help = new AlertDialog.Builder(context).create();
+
+            alert_help.setTitle(getString(R.string.title_help));
+            alert_help.setMessage(getString(R.string.step_useApp));
+
+            alert_help.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                    (dialog, which) -> alert_help.dismiss());
+
+            alert_help.show();
+        });
+    }
+
+    /**
+     * Metodo Responsavel pelo Listener do Botão Login
+     */
     private void listenerLogin() {
+        Button btn_login = findViewById(R.id.btn_login);
         btn_login.setOnClickListener(v -> {
-
-            if (!connectionAvailable()) {
-                Toast.makeText(this, R.string.error_internet, Toast.LENGTH_LONG)
-                        .show();
-            } else if (filledInputs()) {
-                
-                if (!language_choised.equals("")){
-                    sharedPreferences.edit().putString(LANGUAGE_CHOISED, language_choised).apply();
-                }
-                
-
-                if (existsLogin()) {
-                    
-                    if (isCorrectLogin(user.getName(), user.getPassword())) {
-                        sharedPreferences.edit().putBoolean(FIRST_LOGIN, false).apply();
-                        startActivity(new Intent(this, LoggedUser.class));
+            // Verifica se há conexão com a Internet e se os Inputs forão Preenchidps
+            if (!Resources.hasConnectionAvailable(context)) {
+                Toast.makeText(context, R.string.error_internet, Toast.LENGTH_LONG).show();
+            } else if (isFilledInputs()) {
+                // Verifica se já existe um User Logado
+                if (sharedPreferences.hasLogin()) {
+                    // Compara os Dados inseridos com os Dados Salvos do User
+                    if (sharedPreferences.checkCredentialUser(user)) {
+                        // Caso o Usuario tenha Selecionado um Idioma, salva ele nas SharedPreferences
+                        if (!Resources.stringIsNullOrEmpty(user.getCode_language())) {
+                            sharedPreferences.setLanguage(user.getCode_language());
+                        }
+                        sharedPreferences.setFirstLogin(false);
+                        startActivity(new Intent(context, LoggedUser.class));
                         finish();
                     } else {
-                        Toast.makeText(this, R.string.incorrect_login, Toast.LENGTH_LONG)
-                                .show();
+                        Toast.makeText(context, R.string.incorrect_login, Toast.LENGTH_LONG).show();
                     }
-                    
                 } else {
-                    sharedPreferences.edit().putString(NAME_LOGIN, user.getName()).apply();
-                    sharedPreferences.edit().putString(PASSWORD_LOGIN, user.getPassword()).apply();
-                    sharedPreferences.edit().putBoolean(FIRST_LOGIN, true).apply();
-
-                    startActivity(new Intent(this, LoggedUser.class));
+                    // Como não há User logado, salva as Informações do User nas SharedPreferences
+                    sharedPreferences.setUserPreferences(user);
+                    sharedPreferences.setFirstLogin(true);
+                    startActivity(new Intent(context, LoggedUser.class));
                     finish();
                 }
             }
         });
     }
 
-    private boolean connectionAvailable(){
-        //Get Internet Service
-        ConnectivityManager connectionManager = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo;
 
-        if (connectionManager != null) {
-            networkInfo = connectionManager.getActiveNetworkInfo();
-
-            // Get if exists connection
-            if (networkInfo != null && networkInfo.isConnected()){
-                return true;
-            } else{
-                // Connection is not Available
-                Log.e("NO CONECTED", "\nInternet not Connected" +
-                        "\nConection Infos: " + networkInfo);
-                return false;
-            }
-
-        } else{
-            Log.e("NO SERVICE", "\n Error in Connectivity Service" +
-                    "\nService: " + connectionManager);
-            return false;
-        }
-    }
-
-    private boolean filledInputs(){
+    /**
+     * Verifica os dados dos Inputs e caso haja Erro, exibe
+     *
+     * @return true|false
+     */
+    private boolean isFilledInputs() {
         String text_name, text_password;
 
         try {
             text_name = Objects.requireNonNull(login.getText()).toString();
             text_password = Objects.requireNonNull(password.getText()).toString();
-        } catch (Exception ex){
-            Log.e("RECOVERY", "Error retrieving data from fields:\n" + ex);
+        } catch (Exception ex) {
+            Log.e("RECOVERY", "Error retrieving data from fields:\n" + ex.getClass().getName());
+            ex.printStackTrace();
             return false;
         }
 
-        if (text_name.equals("")){
+        // Verifica os Inputs, e caso Haja algum Erro, exibe nos Inputs
+        if (Resources.stringIsNullOrEmpty(text_name)) {
+
             login.setError(getString(R.string.error_inputs, "Name"));
             login.requestFocus();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 layout_name.setBoxStrokeColor(getColor(R.color.red));
             }
             return false;
+        } else if (Resources.stringIsNullOrEmpty(text_password)) {
 
-        } else if (text_password.equals("")){
             password.setError(getString(R.string.error_inputs, "Password"));
             password.requestFocus();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 layout_password.setBoxStrokeColor(getColor(R.color.red));
             }
             return false;
+        } else if (layout_language.getVisibility() == View.VISIBLE &&
+                Resources.stringIsNullOrEmpty(user.getCode_language())) {
 
-        } else if(layout_language.getVisibility() == View.VISIBLE &&
-                input_language.getText().toString().equals("")){
-
-                layout_language.setError(getString(R.string.error_inputs, "Language"));
-                layout_language.requestFocus();
-                return false;
+            layout_language.setError(getString(R.string.error_inputs, "Language"));
+            layout_language.requestFocus();
+            return false;
         } else {
-            user = new User(text_name,text_password,language_choised);
+            user.setName(text_name);
+            user.setPassword(text_password);
             return true;
         }
     }
 
+    /**
+     * Listener do Botão "Clear", que limpa as Informações do Form e das SharedPreferences
+     */
     private void listenerClear() {
-        btn_clear.setOnClickListener(v ->{
-
+        btn_clear.setOnClickListener(v -> {
             login.setText("");
             password.setText("");
-            input_language.setText("",null);
+            input_language.setText("", null);
 
             login.setError(null);
             password.setError(null);
@@ -254,21 +234,12 @@ public class MainActivity extends AppCompatActivity {
                 layout_password.setBoxStrokeColor(getColor(R.color.purple_500));
             }
 
-            if (existsLogin()){
-                sharedPreferences.edit().putString(NAME_LOGIN, null).apply();
-                sharedPreferences.edit().putString(PASSWORD_LOGIN, null).apply();
-                sharedPreferences.edit().putBoolean(FIRST_LOGIN, true).apply();
-                setButtonClear();
+            if (sharedPreferences.hasLogin()) {
+                // Limpa a SharedPrefernces e Atualiza o Layout dos Botões
+                sharedPreferences.resetSharedPreferences();
+                setButtonForm();
             }
         });
-    }
-
-    private boolean isCorrectLogin(String name, String password){
-
-        String name_salve = sharedPreferences.getString(NAME_LOGIN, "");
-        String password_save = sharedPreferences.getString(PASSWORD_LOGIN, "");
-
-        return name_salve.equals(name) && password_save.equals(password);
     }
 
 }

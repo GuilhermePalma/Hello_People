@@ -16,10 +16,10 @@
     <string name="switch_language">Choose the language of the "Hello"</string>
     <string name="hint_language">Language</string>
     <string name="title_help">How to Use ?</string>
-    <string name="step_oneHelp">- Enter your Login and Password in the Screen Fields </string>
-    <string name="step_twoHelp">- If you wish, click on "Choose the Language of the Hello" to customize your "Hello"</string>
-    <string name="step_threeHelp">- Click on the "Login" button</string>
-
+    <string name="step_useApp">- Enter your Login and Password in the Screen Fields<br/>
+        - If you wish, click on "Choose the Language of the Hello" to customize your "Hello"<br/>
+        - Click on the "Login" button
+    </string>
     <!--LoggedUser-->
     <string name="wait_search">Wait while we Search for the IP</string>
     <string name="message_hello">&lt;b>%1$s %2$s&lt;/b>, Welcome!</string>
@@ -30,8 +30,8 @@
     <string name="btn_moreAfterClick">More Details</string>
     <string name="title_details">Details</string>
     <string name="txt_ip">IP Address: %s</string>
-    <string name="txt_langue">Researched language: %1$s %2$s</string>
-    <string name="txt_errorMessage">Error IP: %s</string>
+    <string name="txt_langue">Researched language: %1$s - %2$s</string>
+    <string name="txt_errorMessage">Error IP</string>
     <string name="txt_country">Country: %1$s - %2$s</string>
     <string name="txt_region">Region: %1$s - %2$s</string>
     <string name="txt_city">City: %s</string>
