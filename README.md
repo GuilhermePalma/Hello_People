@@ -76,7 +76,7 @@ Antes de começar, você vai precisar ter instalado em sua máquina:
 
 ### 📥 Baixando o Projeto
 
-Execute os Comandos abaixo no [Git Bash](https://git-scm.com). Dessa Forma, é possivel acessar o Projetos e seus Diretorios com mais Facilidade
+Execute os Comandos abaixo no **[Git Bash](https://git-scm.com)**, dentro da sua pasta escolhida. Dessa Forma, é possivel acessar o Projeto e seus Diretorios com mais Facilidade :smile:
 
 ```bash
 
@@ -103,7 +103,6 @@ Durante a Instalação, seu dispositivo pode exibir alguns avisos informando que
 
 > Após a Instalação do APP, é recomendado que desabilite a opção `"Confiar em Fontes Desconecidas"` (3° Paragrafo)
 
-
 ## 🛠 Tecnologias e Informações
 
 Para a Construção desse APP, foi utilizada a Linguagem **[Java](https://developer.android.com/docs)**, em conjunto com a IDE da JetBrains, Android Studio.
@@ -118,11 +117,14 @@ Para o Desenvolvimento do APP, foram utilizados os seguintes recursos:
 
 ### Estrutura
 
-Este projeto é divido em seis principais partes:
+Este projeto é divido nas seguintes partes:
+
 1. [Layout das Telas](app/src/main/res/layout/)
 2. [Configurações das Telas](app/src/main/java/com/example/hellopeople/activities)
 4. [Classes das Entidades](app/src/main/java/com/example/hellopeople/entity)
 5. [Classes de Funcionalidades](app/src/main/java/com/example/hellopeople/utils)
+
+> É possivel encontrar outros arquivos "Fora" dessa organização. As partes descritas acima são apenas generealização da organização do Projeto
 
 ### Explicação do APP
 
