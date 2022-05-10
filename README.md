@@ -169,12 +169,7 @@ Por se tratar de um projeto mais simples, os dados são salvos de Forma Local em
   </tr>
 </table>
 
-
-## Referencias
-[Florinpop17: APP-Ideas](https://github.com/florinpop17/app-ideas) → [Projeto "Hello"](https://github.com/florinpop17/app-ideas/blob/master/Projects/1-Beginner/Hello-App.md)
-
-
-## 💪 Como contribuir no projeto
+## 💪 Contribuir no Projeto
 
 1. Faça um **fork** do projeto.
 2. Crie uma **nova branch** com as suas alterações: `git checkout -b my-feature`
@@ -184,5 +179,5 @@ Por se tratar de um projeto mais simples, os dados são salvos de Forma Local em
 6. Informe em `base` **o Branch `main` desse Repositorio** e em `compare` o **seu Branch de Alterações**
 7. Insira um **Titulo** e escreva um **Mensagem** indicando o que foi feito nessa sua **Branch**
 
-
----
+## Referencias
+[Florinpop17: APP-Ideas](https://github.com/florinpop17/app-ideas) → [Projeto "Hello"](https://github.com/florinpop17/app-ideas/blob/master/Projects/1-Beginner/Hello-App.md)
